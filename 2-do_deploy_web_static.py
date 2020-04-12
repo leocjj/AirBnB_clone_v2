@@ -21,10 +21,11 @@ def do_deploy(archive_path):
         # upload file to server
         put(archive_path, '/tmp/')
 
-        archive = archive_path.replace('.tgz', '').replace('versions/', '')
+        archive = archive_path.replace('.tgz', '')
+        archive = archive.replace('versions/', '')
 
         # create destination directory
-        run("mkdir -p /data/web_static/releases/" + filename + "/")
+        run("mkdir -p /data/web_static/releases/" + archive + "/")
 
         # uncompress tar file to a directory
         run("sudo tar -xzf /tmp/" + archive + ".tgz" +
