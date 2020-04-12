@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-script (based on the file 2-do_deploy_web_static.py) that creates and distributes an archive to your web servers, using the function deploy:
+script (based on the file 2-do_deploy_web_static.py) that creates and
+distributes an archive to your web servers, using the function deploy:
 """
 from os.path import isfile
 from fabric.api import *
@@ -19,6 +20,7 @@ def deploy():
         return False
     return do_deploy(archive_path)
 
+
 def do_pack():
     """ Generate a .tgz archive from the contents of the web_static folder """
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -29,6 +31,7 @@ def do_pack():
     if file_compresed.failed:
         return None
     return file_path
+
 
 def do_deploy(archive_path):
     """ Distribute an archive to the web servers """
