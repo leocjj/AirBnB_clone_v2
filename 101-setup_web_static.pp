@@ -1,7 +1,14 @@
 # Puppet server setup
 
+$html = "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>\n"
 $root_path = '/data/web_static/'
-$path_arr = ['/data/', $root_path, "${root_path}releases/", "${root_path}releases/test", "${root_path}shared"]
+$path_arr = ["${root_path}releases/test", "${root_path}shared"]
 
 exec { 'update':
   command => '/usr/bin/apt-get update'
@@ -18,7 +25,7 @@ file { $path_arr:
 }
 
 file { "${root_path}releases/test/index.html":
-  content => 'Holberton School',
+  content => $html,
     owner => 'ubuntu',
     group => 'ubuntu'
 }
