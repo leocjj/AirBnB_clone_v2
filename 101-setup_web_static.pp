@@ -1,7 +1,7 @@
 # Puppet server setup
 
 $root_path = '/data/web_static/'
-$path_arr = ["${root_path}releases/test", "${root_path}shared"]
+$path_arr = ['/data/', $root_path, "${root_path}releases/", "${root_path}releases/test", "${root_path}shared"]
 
 exec { 'update':
   command => '/usr/bin/apt-get update'
