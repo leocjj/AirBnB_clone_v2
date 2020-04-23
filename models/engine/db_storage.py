@@ -30,16 +30,20 @@ class DBStorage():
         dbConnector = 'mysql+mysqldb://{}:{}@{}/{}'
         self.__engine = create_engine(dbConnector.format(
             user, pwd, host, dataBase), pool_pre_ping=True)
-
+        Base.metadata.create_all(self.__engine)
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """ query all objects depending of the class name """
+        """ query all objects depending of the class name
         classes = ['State', 'City', 'User', 'Place', 'Review']
         class_dict = {}
         if cls and cls in classes:
             # busca por el tipo de objeto
+            # _object = self.__session.query(cls).all()
+            # for _obj in _object:
+            #    key = type(_obj).__name__ + '.' + _obj.id
+            #    class_dict[key] = _obj
             try:
                 return {'{}.{}'.format(type(obj).__name__, obj.id): obj
                         for obj in self.__session.query(eval(cls)).all()
@@ -52,11 +56,26 @@ class DBStorage():
                 for _obj in _object:
                     key = type(_obj).__name__ + '.' + _obj.id
                     class_dict[key] = _obj
-        return class_dict
+        return class_dict"""
+        """Show all class objects in DBStorage or specified class if given
+        """
+        if cls:
+            objects = self.__session.query(cls).all()
+        else:
+            classes = [State, City, User, Place, Review, Amenity]
+            objects = []
+            for c in classes:
+                objects += self.__session.query(c)
+        my_dict = {}
+        for obj in objects:
+            key = '{}.{}'.format(type(obj).__name__, obj.id)
+            my_dict[key] = obj
+        return my_dict
 
     def new(self, obj):
         """ add the object to the current database session """
-        self.__session.add(obj)
+        if obj:
+            self.__session.add(obj)
 
     def save(self):
         """ commit all changes of the current database session """
