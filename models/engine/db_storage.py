@@ -40,10 +40,12 @@ class DBStorage():
         class_dict = {}
         if cls and cls in classes:
             # busca por el tipo de objeto
-            _object = self.__session.query(cls).all()
-            for _obj in _object:
-                key = type(_obj).__name__ + '.' + _obj.id
-                class_dict[key] = _obj
+            try:
+                return {'{}.{}'.format(type(obj).__name__, obj.id): obj
+                        for obj in self.__session.query(eval(cls)).all()
+                        if eval(cls).__name__ == type(obj).__name__}
+            except:
+                return {}
         else:
             for _class in classes:
                 _object = self.__session.query(eval(_class)).all()
