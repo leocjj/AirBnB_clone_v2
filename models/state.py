@@ -21,15 +21,13 @@ class State(BaseModel, Base):
     if getenv("HBNB_TYPE_STORAGE") == "db":
         cities = relationship('City', backref='state', cascade="all, delete")
     else:
-        name = ""
-
-    # Added for task 6
-    # if getenv("HBNB_TYPE_STORAGE") == "file":
         @property
         def cities(self):
-            list_of_cities = []
-            dic_cities = models.storage.all(City)
-            for city in dic_cities.items():
-                if city.state_id == self.id:
-                    list_of_cities.append(city)
-            return list_of_cities
+            """Return list of City instances with state_id equal to current
+            State.id
+            """
+            list_cities = []
+            for city in models.storage.all(City).values():
+                if self.id == city.state_id:
+                    list_cities.append(city)
+            return list_cities
