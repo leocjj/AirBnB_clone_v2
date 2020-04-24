@@ -58,7 +58,7 @@ class DBStorage():
                     class_dict[key] = _obj
         return class_dict"""
         """Show all class objects in DBStorage or specified class if given
-        """
+        
         if cls:
             objects = self.__session.query(cls).all()
         else:
@@ -71,6 +71,23 @@ class DBStorage():
             key = '{}.{}'.format(type(obj).__name__, obj.id)
             my_dict[key] = obj
         return my_dict
+        """
+        classes = ['State', 'City', 'User', 'Place', 'Review', 'Amenity']
+        class_dict = {}
+        # print("All DbStorage")
+        if cls is None:
+            for _class in classes:
+                _object = self.__session.query(eval(_class))
+                for _obj in _object:
+                    key = type(_obj).__name__ + '.' + _obj.id
+                    class_dict[key] = _obj
+        else:
+            # busca por el tipo de objeto
+            _object = self.__session.query(cls).all()
+            for _obj in _object:
+                key = type(_obj).__name__ + '.' + _obj.id
+                class_dict[key] = _obj
+        return class_dict
 
     def new(self, obj):
         """ add the object to the current database session """
